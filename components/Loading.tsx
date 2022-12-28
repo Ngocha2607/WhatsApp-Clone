@@ -1,7 +1,7 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import Image from "next/image";
 import styled from "styled-components";
-import WhatsAppLogo from "../assets/images/gai-xinh.jpeg";
+import WhatsAppLogo from "../assets/whatsapplogo.png";
 
 const Loading = () => {
   return (
