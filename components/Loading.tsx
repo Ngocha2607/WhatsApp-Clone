@@ -8,7 +8,7 @@ const Loading = () => {
     <StyledContainer>
       <StyledImageWrapper>
         <Image
-          priority
+          
           src={WhatsAppLogo}
           alt="whatsapp logo"
           height={200}
