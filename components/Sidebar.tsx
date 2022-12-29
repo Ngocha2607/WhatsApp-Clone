@@ -144,8 +144,11 @@ const StyledContainer = styled.div`
   height: 100vh;
   min-width: 300px;
   max-width: 350px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-right: 1px solid whitesmoke;
+  ::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 const StyledHeader = styled.div`

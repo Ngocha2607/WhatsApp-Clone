@@ -10,7 +10,7 @@ const ConversationSelect = ({id, conversationUsers}: {id: string; conversationUs
     const router = useRouter()
 
     const onSelectConversation = () => {
-        router.push(`/conversation/${id}`)
+        router.push(`/conversations/${id}`)
     }
 
     return (
