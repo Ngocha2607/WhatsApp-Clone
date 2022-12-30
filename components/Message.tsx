@@ -40,7 +40,7 @@ const Message = ({ message }: { message: IMessage }) => {
 		loggedInUser?.email === message.user
 			? StyledSenderMessage
 			: StyledReceiverMessage
-
+			
 	return (
 		<MessageType>
 			{message.text}

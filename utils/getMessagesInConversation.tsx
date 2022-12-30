@@ -1,4 +1,3 @@
-import { timeStamp } from "console";
 import {
   collection,
   DocumentData,
@@ -15,7 +14,7 @@ export const generateQueryGetMessages = (conversationId?: string) =>
   query(
     collection(db, "messages"),
     where("conversation_id", "==", conversationId),
-    orderBy("send_at", "asc")
+    orderBy("sent_at", "asc")
   );
 
 export const transformMessage = (
@@ -24,9 +23,9 @@ export const transformMessage = (
   ({
     id: message.id,
     ...message.data(), // spread out conversation_id, text, send_at, user
-    sent_at: message.data().send_at
-      ? convertFirestoreTimestampToString(message.data().send_at as Timestamp)
-      : null
+    sent_at: message.data().sent_at
+      ? convertFirestoreTimestampToString(message.data().sent_at as Timestamp)
+      : null,
   } as IMessage);
 
 export const convertFirestoreTimestampToString = (timestamp: Timestamp) =>
