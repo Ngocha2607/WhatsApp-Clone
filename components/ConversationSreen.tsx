@@ -34,20 +34,16 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Message from "./Message";
-import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import PersonIcon from "@mui/icons-material/Person";
-import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
+import storage from "../config/firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const listEmotionIcon = [
   [
@@ -711,9 +707,10 @@ const ConversationScreen = ({
   conversation: Conversation;
   messages: IMessage[];
 }) => {
+  const [loggedInUser, _loading, _error] = useAuthState(auth);
   const [isOpenIcon, setIsOpenIcon] = useState(false);
   const [newMessage, setNewMessage] = useState("");
-  const [loggedInUser, _loading, _error] = useAuthState(auth);
+  const [file, setFile] = useState("");
 
   const conversationUsers = conversation.users;
 
@@ -798,6 +795,41 @@ const ConversationScreen = ({
   const handleClose = () => {
     setIsOpenIcon(false);
   };
+
+  function handleChange(e) {
+	const reader = new FileReader();
+    let file = e.target.files[0]; // get the supplied file
+    // if there is a file, set image to that file
+    if (file) {
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          console.log(file);
+          setFile(file);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    // if there is no file, set image back to null
+    } else {
+      setFile(null);
+    }
+  }
+  function uploadToFirebase () {
+	e.preventDefault()
+    if (file) {
+		//2.
+		const storageRef = storage.ref();
+		//3.
+		const imageRef = storageRef.child(file.name);
+		//4.
+		imageRef.put(file)
+	   //5.
+	   .then(() => {
+		  alert("Image uploaded successfully to Firebase.");
+	  });
+	  } else {
+		alert("Please upload an image first.");
+	  }
+  }
   return (
     <>
       <StyledRecipientHeader>
@@ -843,10 +875,10 @@ const ConversationScreen = ({
           aria-label="upload picture"
           component="label"
         >
-          <input hidden accept="image/*" type="file" onChange={(event) => console.log(event, "jhgjhgj")} />
+          <input hidden accept="image/*" type="file" onChange={e => handleChange(e)} />
           <AttachFileIcon />
         </IconButton>
-
+        <button onClick={uploadToFirebase}>Upload to Firebase</button>
         <IconButton onClick={handleClickOpen}>
           <InsertEmoticonIcon />
         </IconButton>
