@@ -680,7 +680,7 @@ function SimpleDialog(props: SimpleDialogProps) {
               <ListItem key={index} disableGutters alignItems="center">
                 <ListItemButton
                   onClick={(event) =>
-                    setNewMessage((prev) => prev + event.target.innerText)
+                    setNewMessage((prev: any) => prev + event.target.innerText)
                   }
                 >
                   <>
