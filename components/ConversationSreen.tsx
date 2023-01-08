@@ -21,6 +21,7 @@ import VideoCallIcon from "@mui/icons-material/VideoCall";
 import CallIcon from "@mui/icons-material/Call";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
 import {
+  ChangeEvent,
   KeyboardEventHandler,
   MouseEventHandler,
   useRef,
@@ -638,7 +639,7 @@ function SimpleDialog(props: SimpleDialogProps) {
               <ListItem key={index} disableGutters alignItems="center">
                 <ListItemButton
                   onClick={(event) =>
-                    setNewMessage((prev: any) => prev + event.target.innerText)
+                    setNewMessage((prev: any) => prev + (event.target as HTMLDivElement).innerText)
                   }
                 >
                   <>
@@ -659,7 +660,7 @@ function SimpleDialog(props: SimpleDialogProps) {
               <ListItem key={index} disableGutters alignItems="center">
                 <ListItemButton
                   onClick={(event) =>
-                    setNewMessage((prev: any) => prev + event.target.innerText)
+                    setNewMessage((prev: any) => prev + (event.target as HTMLDivElement).innerText)
                   }
                 >
                   <>
@@ -679,8 +680,9 @@ function SimpleDialog(props: SimpleDialogProps) {
             {listEmotionIcon.map((emotion, index) => (
               <ListItem key={index} disableGutters alignItems="center">
                 <ListItemButton
-                  onClick={(event) =>
-                    setNewMessage((prev: any) => prev + event.target.innerText)
+                  onClick={(event) => {                      
+                      setNewMessage((prev: any) => prev + (event.target as HTMLDivElement).innerText)
+                    }
                   }
                 >
                   <>
@@ -796,40 +798,40 @@ const ConversationScreen = ({
     setIsOpenIcon(false);
   };
 
-  function handleChange(e) {
-	const reader = new FileReader();
-    let file = e.target.files[0]; // get the supplied file
-    // if there is a file, set image to that file
-    if (file) {
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          console.log(file);
-          setFile(file);
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    // if there is no file, set image back to null
-    } else {
-      setFile(null);
-    }
-  }
-  function uploadToFirebase () {
-	e.preventDefault()
-    if (file) {
-		//2.
-		const storageRef = storage.ref();
-		//3.
-		const imageRef = storageRef.child(file.name);
-		//4.
-		imageRef.put(file)
-	   //5.
-	   .then(() => {
-		  alert("Image uploaded successfully to Firebase.");
-	  });
-	  } else {
-		alert("Please upload an image first.");
-	  }
-  }
+  // function handleChange(e: ChangeEvent<HTMLInputElement>) {
+	// const reader = new FileReader();
+  //   let file = e.target.files[0]; // get the supplied file
+  //   // if there is a file, set image to that file
+  //   if (file) {
+  //     reader.onload = () => {
+  //       if (reader.readyState === 2) {
+  //         console.log(file);
+  //         setFile(file);
+  //       }
+  //     };
+  //     reader.readAsDataURL(e.target.files[0]);
+  //   // if there is no file, set image back to null
+  //   } else {
+  //     setFile(null);
+  //   }
+  // }
+  // function uploadToFirebase () {
+	// e.preventDefault()
+  //   if (file) {
+	// 	//2.
+	// 	const storageRef = storage.ref();
+	// 	//3.
+	// 	const imageRef = storageRef.child(file.name);
+	// 	//4.
+	// 	imageRef.put(file)
+	//    //5.
+	//    .then(() => {
+	// 	  alert("Image uploaded successfully to Firebase.");
+	//   });
+	//   } else {
+	// 	alert("Please upload an image first.");
+	//   }
+  // }
   return (
     <>
       <StyledRecipientHeader>
@@ -875,10 +877,10 @@ const ConversationScreen = ({
           aria-label="upload picture"
           component="label"
         >
-          <input hidden accept="image/*" type="file" onChange={e => handleChange(e)} />
+          <input hidden accept="image/*" type="file" />
           <AttachFileIcon />
         </IconButton>
-        <button onClick={uploadToFirebase}>Upload to Firebase</button>
+        {/* <button onClick={uploadToFirebase}>Upload to Firebase</button> */}
         <IconButton onClick={handleClickOpen}>
           <InsertEmoticonIcon />
         </IconButton>
